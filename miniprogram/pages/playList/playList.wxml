@@ -1,0 +1,12 @@
+<swiper indicator-dots="true" autoplay="true" circular="true">
+	<block wx:for="{{swiperImgUrls}}" wx:key="url">
+		<swiper-item>
+			<image src="{{item.url}}" model="widthFix" class="img"></image>
+		</swiper-item>
+	</block>
+</swiper>
+<view class="playList_container">
+	<block wx:for="{{playList}}" wx:key="_id">
+		<x-playList playList="{{item}}"></x-playList>
+	</block>
+</view>
