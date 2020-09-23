@@ -2,8 +2,11 @@
   "pages": [
     "pages/playList/playList",
     "pages/blog/blog",
-    "pages/playFile/playFile"
+    "pages/playFile/playFile",
+    "pages/musicList/musicList",
+    "pages/player/player"
   ],
+  "requiredBackgroundModes": ["audio", "location"],
   "tabBar": {
     "color": "#474747",
     "selectedColor": "#d43c43",

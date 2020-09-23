@@ -6,59 +6,57 @@ cloud.init()
 const db = cloud.database()
 // 引用request模块进行ajax请求
 const rp = require('request-promise')
-const URL = 'http://localhost:3000/top/playlist/highquality?before=1503639064232&limit=3'
+const URL = 'https://www.fastmock.site/mock/147eba3750466cc63754f618c4ad38d2/api/top/playlist/highquality'
+
 // 连接playList集合
 const playListCollection = db.collection('playList')
-const maxLimit = 100
+const maxLimit = 3
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const countResult = await playListCollection.count()
-  const total = countResult.total
-  const batchTimes = Math.ceil(total / maxLimit)
-  const tasks = []
-  for (let i = 0; i < batchTimes; i++) {
-    let promise = playListCollection.skip(i * maxLimit).limit(maxLimit).get()
-    tasks.push(promise)
-  }
-  let list = {
-    data: []
-  }
-  if (tasks.lenght > 0) {
-    list = (await Promise.all(tasks)).reduce((acc, cur) => {
-      return {
-        data: acc.data.concat(cur.data)
-      }
-    })
-  }
-  const playList = await rp(URL).then(res => {
-    console.log(JSON.parse(res))
-    return JSON.parse(res)
-
+let playList=await rp(URL).then(res=>{
+  return JSON.parse(res).playlists
+})
+const Max=100
+// let dbPlayList = await playListCollection.get()
+let countDb = await playListCollection.count()
+let total = countDb.total
+let timeOfGet = Math.ceil(total / Max)
+let task=[]
+let list={data:[]}
+for(let i=0;i<timeOfGet;i++){
+  let dataList=playListCollection.skip(i*Max).limit(Max).get()
+  task.push(dataList)
+}
+if(task.length>0){
+  list = (await Promise.all(task)).reduce((acc,cur)=>{
+    return acc.data.concat(cur.data)
   })
-  const newData = []
-  for (let i = 0; i < playList.length; i++) {
-    let flag = true
-    for (let j = 0; j < list.data.length; j++) {
-      if (playList[i].id == list.data[j].id) {
-        flag = false
-        break
-      }
-    }
-    if (flag) {
-      newData.push(playList[i])
+}
+
+let newData=[]
+for(let i=0,len1=playList.length;i<len1;i++){
+  let flag=true
+  for(let j=0,len2=list.data.length;j<len2;j++){
+    if(playList[i].id==list.data[j].id){
+      flag=false;
+      break;
     }
   }
-  for (let i = 0; i < newData.length; i++) {
-    await playListCollection.add({
-      data: {
-        ...newData[i],
-        createTime: db.serverDate()
-      }
-    }).then(res => {
-      console.log("插入成功")
-    }).catch(err => {
-      console.log("插入失败")
-    })
+  if(flag){
+    newData.push(playList[i])
   }
-  return newData.length
+}
+for(let i=0;i<newData.length;i++){
+  await playListCollection.add({
+    data:{
+      ...newData[i],
+      createdTime:db.serverDate()
+    }
+  }).then(res=>{
+    console.log("添加成功")
+  }).catch(err=>{
+    console.log("添加失败")
+  })
+}
+return newData.length
 }

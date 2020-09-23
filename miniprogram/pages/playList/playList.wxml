@@ -5,7 +5,7 @@
 		</swiper-item>
 	</block>
 </swiper>
-<view class="playList_container">
+<view class="playList_container" >
 	<block wx:for="{{playList}}" wx:key="_id">
 		<x-playList playList="{{item}}"></x-playList>
 	</block>
