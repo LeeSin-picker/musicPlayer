@@ -1,1 +1,34 @@
-/* components/progress-bar/progress-bar.wxss */
+.contain {
+  display: flex;
+
+}
+
+.control {
+  flex: 1;
+  position: relative;
+}
+
+.movable-area {
+  width: 100%;
+  position: absolute;
+  bottom: -14rpx;
+  height: 34rpx;
+  left: 0;
+}
+
+.movable-view {
+  width: 36rpx;
+  height: 36rpx;
+  background: #fefefe;
+  border-radius: 50%;
+}
+
+.time {
+  width: 64rpx;
+  padding: 0 20rpx;
+  font-size: 24rpx;
+  font-family: NotoSansHans-Regular;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+  line-height: 30rpx;
+}

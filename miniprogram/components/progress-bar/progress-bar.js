@@ -13,7 +13,11 @@ Component({
   data: {
 
   },
-
+  lifetimes: {
+    ready() {
+      console.log('执行了')
+    }
+  },
   /**
    * 组件的方法列表
    */

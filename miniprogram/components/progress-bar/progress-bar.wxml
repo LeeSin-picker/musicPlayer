@@ -1,8 +1,10 @@
-<view>
-	<text></text>
-	<movable-area>
-		<movable-view></movable-view>
-	</movable-area>
-<progress></progress>
-	<text></text>
+<view class="contain">
+	<text class="time"></text>
+	<view class="control">
+		<movable-area class="movable-area">
+			<movable-view class="movable-view" direction="horizontal" damping="1000"></movable-view>
+		</movable-area>
+		<progress stroke-width="4"></progress>
+	</view>
+	<text class="time"></text>
 </view>

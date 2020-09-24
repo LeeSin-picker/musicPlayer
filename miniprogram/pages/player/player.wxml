@@ -5,7 +5,9 @@
 	<view class="player-disc {{isPlaying?'play':''}}">
 		<image class="player-img rotation {{isPlaying?'':'rotation-paused'}}" src="{{picUrl}}"></image>
 	</view>
-	<x-progressBar/>
+	<view class="progress-bar">
+		<x-progressBar />
+	</view>
 	<view class="control">
 		<text class="iconfont icon-shangyishoushangyige" bind:tap="preMusic" ></text>
 		<text class="iconfont {{isPlaying?'icon-zanting1':'icon-bofang1'}}" bind:tap="togglePlaying"></text>
