@@ -1,8 +1,9 @@
 // components/progress-bar/progress-bar.js
 let backgroundAudio = wx.getBackgroundAudioManager()
-let duration=0
-let moveAreaWidth=0
-let moveViewWidth=0
+let duration = 0
+let moveAreaWidth = 0
+let moveViewWidth = 0
+let currentSec = -1
 Component({
   /**
    * 组件的属性列表
@@ -18,7 +19,9 @@ Component({
     showTime: {
       currentTime: "00:00",
       totalTime: "00:00"
-    }
+    },
+    movableDis: 0,
+    progress: 0
   },
   lifetimes: {
     ready() {
@@ -43,7 +46,19 @@ Component({
         this.getTotalTime()
       })
       backgroundAudio.onTimeUpdate(() => {
-        console.log('onTimeUpdate')
+        let duration = backgroundAudio.duration
+        let currentTime = backgroundAudio.currentTime
+        if (currentSec != Math.floor(currentTime)) {
+          console.log(123)
+          this.setData({
+            movableDis: (moveAreaWidth - moveViewWidth) * currentTime / duration,
+            progress: currentTime * 100 / duration,
+            ['showTime.currentTime']: this.timeFormat(currentTime).min + ":" + this.timeFormat(currentTime).sec
+          })
+          currentSec = Math.floor(currentTime)
+        }
+        // console.log(backgroundAudio.currentTime)
+        // console.log('onTimeUpdate')
       })
       backgroundAudio.onWaiting(() => {
         console.log('onWaiting')
@@ -56,7 +71,7 @@ Component({
       })
     },
     getTotalTime() {
-      
+
       if (typeof backgroundAudio.duration != 'undefined') {
         duration = backgroundAudio.duration
         let timeTotal = this.timeFormat(duration)
@@ -87,9 +102,9 @@ Component({
       query.select('.movable-area').boundingClientRect()
       query.select('.movable-view').boundingClientRect()
       query.exec((res) => {
-        moveAreaWidth=res[0].width
-        moveViewWidth=res[1].width
-        console.log(moveAreaWidth,moveViewWidth)
+        moveAreaWidth = res[0].width
+        moveViewWidth = res[1].width
+        console.log(moveAreaWidth, moveViewWidth)
       })
     }
   }
