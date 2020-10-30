@@ -6,7 +6,7 @@
 		<image class="player-img rotation {{isPlaying?'':'rotation-paused'}}" src="{{picUrl}}"></image>
 	</view>
 	<view class="progress-bar">
-		<x-progressBar />
+		<x-progressBar bind:musicEnd="nextMusic" />
 	</view>
 	<view class="control">
 		<text class="iconfont icon-shangyishoushangyige" bind:tap="preMusic" ></text>

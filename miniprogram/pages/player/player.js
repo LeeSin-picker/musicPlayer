@@ -1,8 +1,9 @@
 // pages/player/player.js
 let nowPlayingIndex = 0
-let musicList=[]
+let musicList = []
 // 获取全局唯一的背景音频管理器
 const bgMusic = wx.getBackgroundAudioManager()
+const app = getApp()
 Page({
   /**
    * 页面的初始数据
@@ -30,8 +31,9 @@ Page({
     })
     this.setData({
       picUrl: musicList[nowPlayingIndex].al.picUrl,
-      isPlaying:false
+      isPlaying: false
     })
+    app.setPlayMusicId(musicId)
     wx.showLoading({
       title: '歌曲加载中',
     })
@@ -52,25 +54,25 @@ Page({
       bgMusic.singer = musicList[nowPlayingIndex].ar[0].name
       bgMusic.epname = musicList[nowPlayingIndex].al.name
       this.setData({
-        isPlaying:true
+        isPlaying: true
       })
       wx.hideLoading({
         success: (res) => {},
       })
     })
   },
-  preMusic(){
+  preMusic() {
     nowPlayingIndex--
-    if(nowPlayingIndex<0){
-      nowPlayingIndex=musicList.length-1
+    if (nowPlayingIndex < 0) {
+      nowPlayingIndex = musicList.length - 1
     }
-   console.log( musicList[nowPlayingIndex].id)
+    console.log(musicList[nowPlayingIndex].id)
     this.loadingMusic(musicList[nowPlayingIndex].id)
   },
-  nextMusic(){
+  nextMusic() {
     nowPlayingIndex++
-    if(nowPlayingIndex==musicList.length){
-      nowPlayingIndex=0
+    if (nowPlayingIndex == musicList.length) {
+      nowPlayingIndex = 0
     }
     this.loadingMusic(musicList[nowPlayingIndex].id)
   },
